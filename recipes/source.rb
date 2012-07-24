@@ -175,15 +175,6 @@ else
   end
 end
 
-%w{nxensite nxdissite}.each do |nxscript|
-  template "/usr/sbin/#{nxscript}" do
-    source "#{nxscript}.erb"
-    mode "0755"
-    owner "root"
-    group "root"
-  end
-end
-
 include_recipe 'nginx::commons'
 
 cookbook_file "#{node['nginx']['dir']}/mime.types" do
