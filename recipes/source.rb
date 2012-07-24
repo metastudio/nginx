@@ -96,6 +96,21 @@ node.run_state.delete(:nginx_configure_flags)
 node.run_state.delete(:nginx_force_recompile)
 
 case node['nginx']['init_style']
+when "upstart"
+  template "/etc/init/nginx.conf" do
+    source "nginx.upstart.erb"
+    mode 0644
+    variables(
+      :src_binary_path => node['nginx']['binary'],
+      :pid_path        => node['nginx']['pid'],
+      :config_path     => "#{node[:nginx][:dir]}/nginx.conf"
+    )
+  end
+
+  service "nginx" do
+    reload_command "[[ -f #{node['nginx']['pid']} ]] && kill -HUP `cat #{node['nginx']['pid']}` || true"
+    provider Chef::Provider::Service::Upstart
+  end
 when "runit"
   node.set['nginx']['src_binary'] = node['nginx']['binary']
   include_recipe "runit"
