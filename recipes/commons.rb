@@ -29,6 +29,24 @@ directory node['nginx']['log_dir'] do
   action :create
 end
 
+%w(sites-available sites-available/conf.d sites-enabled conf.d).each do |leaf|
+  directory File.join(node['nginx']['dir'], leaf) do
+    owner "root"
+    group "root"
+    mode "0755"
+    recursive true
+  end
+end
+
+%w(nxensite nxdissite).each do |nxscript|
+  template "/usr/sbin/#{nxscript}" do
+    source "#{nxscript}.erb"
+    mode "0755"
+    owner "root"
+    group "root"
+  end
+end
+
 template "nginx.conf" do
   path "#{node['nginx']['dir']}/nginx.conf"
   source "nginx.conf.erb"
