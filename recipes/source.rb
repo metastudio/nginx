@@ -188,3 +188,5 @@ end
 service "nginx" do
   action :start
 end
+
+include_recipe "nginx::monit"
