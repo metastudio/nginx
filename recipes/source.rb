@@ -162,8 +162,8 @@ else
     )
   end
 
-  template "/etc/sysconfig/nginx" do
-    source "nginx.sysconfig.erb"
+  template "/etc/default/nginx" do
+    source "nginx.default.erb"
     owner "root"
     group "root"
     mode "0644"
