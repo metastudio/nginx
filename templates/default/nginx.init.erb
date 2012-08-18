@@ -241,7 +241,7 @@ reload() {
  
         isRunning
         if [ $? -eq $TRUE ]; then
-    `killall -HUP $PS` #to be safe
+          $DAEMON -s reload
  
                 log_end_msg $SCRIPT_OK
         else
